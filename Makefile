@@ -1,11 +1,9 @@
-CC=		gcc
-LDFLAGS=	-L/usr/lib	-L/usr/local/lib  	-L/usr/lib/ncurses	-L/usr/local/lib/ncurses
-CPPFLAGS=	-I/usr/include	-I/usr/local/include	-I/usr/include/ncurses	-I/usr/local/include/ncurses
-CFLAGS=		-O3 -Wall -std=c99
+CC=gcc
+LDFLAGS=$(shell pkg-config --libs ncurses)
+CFLAGS=$(shell pkg-config --cflags  ncurses) -O2 -Wall -std=c99 -I. -DNCURSES_WIDECHAR=1
 #CFLAGS+= -ffunction-sections -fdata-sections
 #LDFLAGS+= --gc-sections
-LIBS=		-lncurses
-DESTDIR=	/usr/local/
+DESTDIR=/usr/local/
 
 OFILES=buffers.o \
 	configfile.o \
@@ -21,10 +19,10 @@ OFILES=buffers.o \
 	search.o \
 	ui.o
 
-all:	dhex
+all:dhex
 
-dhex:	$(OFILES)
-	$(CC) $(LDFLAGS) -o $@ $(OFILES) $(LIBS)
+dhex:$(OFILES)
+	$(CC)  -o $@ $(OFILES) $(LDFLAGS) $(LIBS)
 
 install:all
 	strip dhex
@@ -34,12 +32,8 @@ install:all
 	cp dhex_markers.5 $(DESTDIR)/man/man5
 	cp dhex_searchlog.5 $(DESTDIR)/man/man5
 
-
-
 .c.o:
-	$(CC) $< -c -I. $(CPPFLAGS) $(CFLAGS) $(OPTIONS)
+	$(CC) -c $(CFLAGS) $<
 
 clean:
 	rm -f dhex $(OFILES)
-
-

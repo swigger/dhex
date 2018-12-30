@@ -405,6 +405,7 @@ int main(int argc,char** argv)
 	int filename2=-1;
 	char* homedir;
 	char configfile[512];
+	setenv("LANG", "en_US.UTF-8", 1);
 	setlocale(LC_ALL, "");
 #ifdef DEBUG
 	{
