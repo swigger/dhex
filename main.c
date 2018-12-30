@@ -405,9 +405,9 @@ int main(int argc,char** argv)
 	int filename2=-1;
 	char* homedir;
 	char configfile[512];
+	setlocale(LC_ALL, "");
 #ifdef DEBUG
 	{
-		setlocale(LC_ALL, "");
 		const char * tty = "/dev/ttys004";
 		int fd = open(tty, O_RDONLY);
 		dup2(fd, 0);
