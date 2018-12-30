@@ -113,7 +113,7 @@ tInt16 decinput(tOutput* output,tInt16 y,tInt16 x,tInt64* val,tInt16 len)
 	while (!done)
 	{
 		setcolor(output,COLOR_INPUT);
-		snprintf(tmpbuf,21,"%20lli",newval);
+		snprintf(tmpbuf,21,"%20llu",newval);
 		for (i=0;i<len && i<20;i++) mvwprintw(output->win,y,x+len-i,"%c",tmpbuf[20-i]);
 		wmove(output->win,y,x+len);
 		ch=getkey(output->pKeyTab,1);

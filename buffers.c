@@ -90,7 +90,7 @@ tInt32	getbufferidx(tBuffer* hBuf,tInt64 pos)
 	if (retval==OK)
 	{
 		tInt64 df = pos - hBuf->bufferpos;
-		assert(df>0 && df<INT_MAX);
+		assert(df>=0 && df<INT_MAX);
 		retval = (int)df;
 	}
 	return retval;

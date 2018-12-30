@@ -40,8 +40,9 @@ const tColorGroup colorGroups[NUMCOLORGROUPS]={
 				{"HEADER:",		 7,COLOR_HEADER},
 				{"FRAME:",		 6,COLOR_FRAME}
 				};
-#define	NUMCOLORNAMES	20
+#define	NUMCOLORNAMES	21
 const tColorName colorNames[NUMCOLORNAMES]={
+					{"DEFAULT", 7,-1,0},
 					{"BLACK",	5,COLOR_BLACK,0},
 					{"RED",		3,COLOR_RED,0},
 					{"GREEN",	5,COLOR_GREEN,0},

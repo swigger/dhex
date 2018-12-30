@@ -7,6 +7,13 @@
 #include "output.h"
 #include "buffers.h"
 
+int get_bytesperline(int addrwidth)
+{
+	//a+3+(8*3+1)t+3+8t = COL
+	int t = (COLS-(addrwidth+3+3))/(8*3+8+1);
+	return t*8;
+}
+
 void initcolors(tOutput* output)
 {
 	output->colors[COLOR_BRACKETS].fg	=COLOR_BLACK;	output->colors[COLOR_BRACKETS].bg	=COLOR_BLACK;	output->colors[COLOR_BRACKETS].attrs	=A_BOLD;
@@ -35,6 +42,7 @@ void pairsinit(tOutput* output)
 {
 	int i;
 	start_color();
+	use_default_colors();
 	for (i=0;i<UICOLORNUM;i++)
 	{
 		init_pair(i,output->colors[i].fg,output->colors[i].bg);output->attrs[i]=COLOR_PAIR(i)+output->colors[i].attrs;
@@ -89,16 +97,14 @@ void printbuffersingle(tOutput* output,tBuffer* hBuf1,tInt64 cursorpos1,tUInt64 
 	tInt32 intpos1;
 	tInt32 charcnt;
 
-
-
 	addrwidth=((hBuf1->bufsize+hBuf1->baseaddr)>0xffffffffull)?16:8;
-	bytesperline=(COLS-(addrwidth+3+3))*8/(8*3+8+1);			// this many bytes can be printed in one line. every 8 bytes there is an extra space in the hex field.
+	bytesperline = get_bytesperline(addrwidth);
 
 	setcolor(output,COLOR_HEADLINE);
 	wmove(output->win,0,0);
 	for (i=0;i<COLS;i++)
 	{
-		waddch(output->win,ACS_HLINE);
+		waddch(output->win, ACS_HLINE);
 	}
 	setcolor(output,COLOR_BRACKETS);
 	mvwprintw(output->win,0,COLS-3-istrlen(hBuf1->filename),"[");
@@ -128,7 +134,7 @@ void printbuffersingle(tOutput* output,tBuffer* hBuf1,tInt64 cursorpos1,tUInt64 
 			if (addrwidth==8)	mvwprintw(output->win,i+1,0, "% 8X    ",(tUInt32)(firstpos1+hBuf1->baseaddr));
 			else			mvwprintw(output->win,i+1,0,"% 16llX    ",firstpos1+hBuf1->baseaddr);
 
-			mvwprintw(output->win,i+1,COLS-bytesperline-5,"      ");
+			//mvwprintw(output->win,i+1,COLS-bytesperline-5,"      ");
 			wmove(output->win,i+1,addrwidth+3);
 			colhex=1;
 			for (j=0;j<bytesperline;j++)
@@ -168,9 +174,11 @@ void printbuffersingle(tOutput* output,tBuffer* hBuf1,tInt64 cursorpos1,tUInt64 
 				colhex=1;
 //				mvwprintw(output->win,i+1,addrwidth+5+j*3+j/8,"   ");
 			}
+			wprintw(output->win, "     ");
 			for (j=0;j<bytesperline;j++)
 			{
 				unsigned char c;
+				int left = addrwidth+3+bytesperline*3+bytesperline/8 + 3;
 				if (intpos1<hBuf1->filesize)
 					c=hBuf1->data[intpos1];
 				else c=' ';
@@ -184,7 +192,7 @@ void printbuffersingle(tOutput* output,tBuffer* hBuf1,tInt64 cursorpos1,tUInt64 
 				}
 				if (cursorpos1==firstpos1 && windowfield==1) setcolor(output,COLOR_INPUT);
 				//  TODO: setcolor(buf1->data[intpos1]!=buf2->data[intpos2]?COLOR_DIFF:COLOR_HEXFIELD);
-				mvwprintw(output->win,i+1,COLS-bytesperline+j,"%c",(c>=32 && c<127)?c:'.');
+				mvwprintw(output->win,i+1,left+j,"%c",(c>=32 && c<127)?c:'.');
 				intpos1++;
 				firstpos1++;
  				setcolor(output,COLOR_HEXFIELD);
@@ -207,7 +215,7 @@ void printbufferdiff(tOutput* output,tBuffer* hBuf1,tBuffer* hBuf2,tInt64 cursor
 
 
 	addrwidth=((hBuf1->bufsize+hBuf1->baseaddr)>0xffffffffull || (hBuf2->bufsize+hBuf2->baseaddr)>0xffffffffull)?16:8;
-	bytesperline=(COLS-(addrwidth+3+3))*8/(8*3+8+1);			// this many bytes can be printed in one line. every 8 bytes there is an extra space in the hex field.
+	bytesperline= get_bytesperline(addrwidth); // this many bytes can be printed in one line. every 8 bytes there is an extra space in the hex field.
 
 	setcolor(output,COLOR_HEADLINE);
 	wmove(output->win,0,0);
@@ -460,13 +468,14 @@ tInt32 movepositions(tInt64* cursorpos,tInt64* firstpos,tInt64 maxbufsize,tInt32
 
 
 	addrwidth=(maxbufsize>0xffffffffull)?16:8;
-	bytesperline=(COLS-(addrwidth+3+3))*8/(8*3+8+1);			// this many bytes can be printed in one line. every 8 bytes there is an extra space in the hex field.
+	bytesperline=get_bytesperline(addrwidth);
 	bytesperhalfpage=bytesperline*(LINES/2-2);
 	bytesperpage=bytesperline*(LINES-2);
 
 
 	newcursorpos+=(chars+lines*bytesperline+pages*(diffmode?bytesperhalfpage:bytesperpage));
 	if (newcursorpos>=(newfirstpos+(diffmode?bytesperhalfpage:bytesperpage)) ||  (newcursorpos<newfirstpos)) newfirstpos+=(chars+lines*bytesperline+pages*(diffmode?bytesperhalfpage:bytesperpage));
+	if (newfirstpos<0) newfirstpos = 0;
 
 	*firstpos=newfirstpos;
 	*cursorpos=newcursorpos;

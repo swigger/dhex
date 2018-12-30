@@ -6,6 +6,10 @@
 #include <strings.h>
 #include <string.h>
 #include <ncursesw/ncurses.h>
+#include <locale.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/types.h>
 #include "menu.h"
 #include "configfile.h"
 #include "machine_type.h"
@@ -401,7 +405,16 @@ int main(int argc,char** argv)
 	int filename2=-1;
 	char* homedir;
 	char configfile[512];
-
+#ifdef DEBUG
+	{
+		setlocale(LC_ALL, "");
+		const char * tty = "/dev/ttys004";
+		int fd = open(tty, O_RDONLY);
+		dup2(fd, 0);
+		fd = open(tty, O_WRONLY);
+		dup2(fd, 1);
+	}
+#endif
 	memset(configfile,0,512);
 	memset(markerfilename,0,64);
 	markers=initmarkers();
