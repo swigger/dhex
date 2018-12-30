@@ -180,7 +180,7 @@ int readconfigfile(tOutput* output,char* filename)
 	keyboardcnt=0;
 	while (!feof(f))
 	{
-		fread(&c,sizeof(char),1,f);
+		fread(&c,sizeof(char),1,f) >0||(c=0);
 		if (!feof(f))
 		{
 			if (c>='a' && c<='z') c-=32;	// make everything uppercase

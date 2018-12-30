@@ -19,7 +19,7 @@ void newMenuItem(tMenu* Menu,char* text,tUInt16 y,tUInt16 x,char hotkey,tBool ac
 	Menu->MenuItems[Menu->menuitemnum].y=y;
 	if (hotkey>='a' && hotkey<='z') hotkey-=32;	// make the hotkey uppercase
 	Menu->MenuItems[Menu->menuitemnum].hotkey=hotkey;
-	
+
 	if (active) Menu->menuitemactive=Menu->menuitemnum;
 	*itemnum=Menu->menuitemnum;
 	Menu->menuitemnum++;
@@ -43,7 +43,7 @@ void printMenu(tOutput* output,tMenu* Menu,tUInt16 offsy,tUInt16 offsx)
 					j=65;
 				}
 			}
-		}	
+		}
 	}
 }
 void MenuMoveLeft(tMenu* Menu)
@@ -81,11 +81,11 @@ void MenuMoveLeft(tMenu* Menu)
 			if (mindiffx>=diffx && diffx>0)
 			{
 				mindiffx=diffx;
-				minact=i;				
+				minact=i;
 			}
 		}
 	}
-	Menu->menuitemactive=minact;	
+	Menu->menuitemactive=minact;
 }
 void MenuMoveRight(tMenu* Menu)
 {
@@ -122,11 +122,11 @@ void MenuMoveRight(tMenu* Menu)
 			if (mindiffx>=diffx && diffx>0)
 			{
 				mindiffx=diffx;
-				minact=i;				
+				minact=i;
 			}
 		}
 	}
-	Menu->menuitemactive=minact;	
+	Menu->menuitemactive=minact;
 }
 void MenuMoveUp(tMenu* Menu)
 {
@@ -163,11 +163,11 @@ void MenuMoveUp(tMenu* Menu)
 			if (mindiffy>=diffy && diffy>0)
 			{
 				mindiffy=diffy;
-				minact=i;				
+				minact=i;
 			}
 		}
 	}
-	Menu->menuitemactive=minact;	
+	Menu->menuitemactive=minact;
 }
 void MenuMoveDown(tMenu* Menu)
 {
@@ -194,7 +194,7 @@ void MenuMoveDown(tMenu* Menu)
 		diffx=Menu->MenuItems[i].x-actx;
 		diffy=Menu->MenuItems[i].y-acty;
 		if (diffx<0) diffx=-diffx;
-	
+
 		if (mindiffx>diffx)
 		{
 			mindiffx=diffx;
@@ -205,11 +205,11 @@ void MenuMoveDown(tMenu* Menu)
 			if (mindiffy>=diffy && diffy>0)
 			{
 				mindiffy=diffy;
-				minact=i;				
+				minact=i;
 			}
 		}
 	}
-	Menu->menuitemactive=minact;	
+	Menu->menuitemactive=minact;
 }
 void MenuSetActiveItem(tMenu* Menu,tInt8 itemnum)
 {
@@ -219,7 +219,7 @@ tInt8 MenuInteract(tOutput* output,tMenu* Menu,tInt16 offsy,tInt16 offsx)
 {
 	tInt16	ch;
 	int	i;
-	tInt8	retval;
+	tInt8	retval=0;
 
 	ch=0;
 	printMenu(output,Menu,offsy,offsx);
@@ -244,12 +244,12 @@ tInt8 MenuInteract(tOutput* output,tMenu* Menu,tInt16 offsy,tInt16 offsx)
 						{
 							Menu->menuitemactive=i;
 							ch=KEYENTER;
-						}	
+						}
 					}
 				}
 			break;
 		}
 		printMenu(output,Menu,offsy,offsx);
 	}
-	return Menu->menuitemactive;
+	return retval;
 }

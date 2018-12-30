@@ -95,7 +95,6 @@ void printbuffersingle(tOutput* output,tBuffer* hBuf1,tInt64 cursorpos1,tUInt64 
 	int addrwidth;
 	int bytesperline;
 	tInt32 intpos1;
-	tInt32 charcnt;
 
 	addrwidth=((hBuf1->bufsize+hBuf1->baseaddr)>0xffffffffull)?16:8;
 	bytesperline = get_bytesperline(addrwidth);
@@ -126,7 +125,6 @@ void printbuffersingle(tOutput* output,tBuffer* hBuf1,tInt64 cursorpos1,tUInt64 
 	intpos1=getbufferidx(hBuf1,firstpos1);
 	if (intpos1>=0)
 	{
-		charcnt=0;
 		for (i=0;i<LINES-2;i++)
 		{
 			tBool colhex;
@@ -210,7 +208,6 @@ void printbufferdiff(tOutput* output,tBuffer* hBuf1,tBuffer* hBuf2,tInt64 cursor
 	tInt32 intpos1b;
 	tInt32 intpos2;
 	tInt32 intpos2b;
-	tInt32 charcnt;
 	uicolors oldcolor;
 
 
@@ -271,7 +268,6 @@ void printbufferdiff(tOutput* output,tBuffer* hBuf1,tBuffer* hBuf2,tInt64 cursor
 	}
 	if (intpos1>=0 || intpos2>=0)
 	{
-		charcnt=0;
 		intpos1b=intpos1;
 		intpos2b=intpos2;
 

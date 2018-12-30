@@ -77,9 +77,7 @@ tInt8	searchfor(tSearch* search,tBuffer* buf,tInt64* cursorpos,tBool nextnotprev
 						// state 2: read until the end of the line
 			tUInt64	x=0;
 			tBool	havenum;
-			tInt64	firstsearchlogpos;
-
-			firstsearchlogpos=search->lastsearchlogpos;
+			//tInt64 firstsearchlogpos=search->lastsearchlogpos;
 
 			setfilepos(frlog,search->lastsearchlogpos);
 			havenum=0;
@@ -90,7 +88,7 @@ tInt8	searchfor(tSearch* search,tBuffer* buf,tInt64* cursorpos,tBool nextnotprev
 				state=0;
 				while (c>=32 && !done)
 				{
-					fread(&c,sizeof(char),1,frlog);
+					fread(&c,sizeof(char),1,frlog) >0||(c=0);
 					done=feof(frlog);
 					if (!done)
 					{

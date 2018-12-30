@@ -37,7 +37,7 @@ int	parsemarkerfile(tMarkers* markers,char* filename)
 	if (!f)	return	RETNOK;
 	while (!feof(f) && markersnum<10)
 	{
-		fread(&c,sizeof(char),1,f);
+		fread(&c,sizeof(char),1,f) >0||(c=0);
 		if (c>='a' && c<='z') c=c-32;	// make the letters uppercase
 		if (!feof(f) && c!=' ' && c!=9)	// ignore the spaces
 		{

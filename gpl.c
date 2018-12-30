@@ -4,7 +4,7 @@ void warte()
 {
         char b[2];
         fprintf(stderr,"...Please press <Enter> to read on...");
-        fgets(b,sizeof(b),stdin);
+        fgets(b,sizeof(b),stdin) || (b[0]=0);
 }
 
 void print_gpl()

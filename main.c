@@ -240,8 +240,8 @@ int parsecommandlineoptions(int argc,char** argv,tInt64* baseaddr1,tInt64* basea
 									search=search2;
 									gosearch=gosearch2;
 								}
-
 							}
+							(void)forward;
 
 							*gosearch=1;
 							search->forwardnotbackward=!(lastopt[2]=='b' || lastopt[2]=='B');

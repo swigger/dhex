@@ -16,7 +16,7 @@ void find_longestmatch(tOutput* output,tCorrelation* correlation,tBuffer* buf1,t
 	tInt64	diff;
 	tBool	found=0;
 
-	
+
 	if (output)
 	{
 		offsx=COLS/2-22;
@@ -30,7 +30,7 @@ void find_longestmatch(tOutput* output,tCorrelation* correlation,tBuffer* buf1,t
 		if (smallwin) mvwprintw(smallwin,4,1,"%18lli",0);
 		wrefresh(output->win);
 	}
-	
+
 	correlation->bestmatch=0;
 	correlation->mindiff=MAX(buf1->bufsize,buf2->bufsize);
 	for (pos1=-(tInt64)buf2->bufsize;pos1<(tInt64)buf1->bufsize;pos1++)
@@ -104,7 +104,7 @@ void find_bestmatch(tOutput* output,tCorrelation* correlation,tBuffer* buf1,tBuf
 	tInt64	diff;
 	tBool	found=0;
 
-	
+
 	if (output)
 	{
 		offsx=COLS/2-22;
@@ -118,7 +118,7 @@ void find_bestmatch(tOutput* output,tCorrelation* correlation,tBuffer* buf1,tBuf
 		if (smallwin) mvwprintw(smallwin,4,1,"%18lli",0);
 		wrefresh(output->win);
 	}
-	
+
 	correlation->bestmatch=0;
 	correlation->mindiff=MAX(buf1->bufsize,buf2->bufsize);
 	for (pos1=-(tInt64)buf2->bufsize;pos1<(tInt64)buf1->bufsize;pos1++)
@@ -178,11 +178,8 @@ void find_mindiff(tOutput* output,tCorrelation* correlation,tBuffer* buf1,tBuffe
 	WINDOW* smallwin=NULL;
 	tBuffer* smallbuf;
 	tBuffer* bigbuf;
-	tInt64	match;
 	tBool	found=0;
 
-	
-	
 	if (output)
 	{
 		offsx=COLS/2-22;
@@ -196,10 +193,10 @@ void find_mindiff(tOutput* output,tCorrelation* correlation,tBuffer* buf1,tBuffe
 		mvwprintw(smallwin,4,1,"%18lli",correlation->start_mindiff);
 		wrefresh(output->win);
 	}
-	
+
 	smallbuf=(buf1->bufsize<buf2->bufsize)?buf1:buf2;
 	bigbuf  =(buf1->bufsize<buf2->bufsize)?buf2:buf1;
-	
+
 	correlation->mindiff=correlation->start_mindiff;
 	correlation->bestmatch=0;
 	if (!correlation->mindiff) correlation->mindiff=bigbuf->bufsize;
@@ -207,7 +204,6 @@ void find_mindiff(tOutput* output,tCorrelation* correlation,tBuffer* buf1,tBuffe
 	for (pos1=-(tInt64)smallbuf->bufsize;pos1<(tInt64)bigbuf->bufsize && correlation->mindiff;pos1++)
 	{
 		diff=0;
-		match=0;
 		if (smallwin) mvwprintw(smallwin,1,3,"%16lli",((tInt64)bigbuf->bufsize-pos1));
 		else fprintf(stderr,"%16lli\r",((tInt64)buf1->bufsize-pos1));
 
