@@ -1,6 +1,6 @@
 #ifndef	DATATYPES_H
 #define	DATATYPES_H
-#include <ncurses.h>
+#include <ncursesw/ncurses.h>
 #include "machine_type.h"
 
 /* INPUT DATATYPES */
@@ -65,7 +65,7 @@ typedef struct _tBuffer
 /* CORRELATION DATATYPES */
 typedef	enum {CORR_BEST_MATCH,CORR_LONGEST_MATCH,CORR_MIN_DIFF} corr_algorithms;
 typedef struct _tCorrelation
-{	
+{
 	tBool		correlated;
 	corr_algorithms algorithm;
 	tInt64		start_mindiff;
@@ -113,9 +113,9 @@ typedef	struct	_tSearch
 typedef struct	_tMarkers
 {
 	char	relative[NUMMARKERS];
-	tUInt64	cursorpos[NUMMARKERS];	
+	tUInt64	cursorpos[NUMMARKERS];
 } tMarkers;
 
 
 
-#endif	
+#endif

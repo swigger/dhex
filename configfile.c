@@ -89,7 +89,7 @@ int getcolors(tOutput* output,char* line)
 	int attrsret;
 	short fg=7,bg=0;
 
-	l=strlen(line);
+	l=istrlen(line);
 	memset(token,0,sizeof(token));
 	for (i=0;i<l;i++)
 	{
@@ -171,7 +171,7 @@ int getcolors(tOutput* output,char* line)
 int readconfigfile(tOutput* output,char* filename)
 {
 	tFptr f=fopen(filename,"rb");
-	unsigned char line[512];
+	char line[512];
 	unsigned char c;
 	int lineidx=0;
 	int	keyboardcnt;

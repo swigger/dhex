@@ -4,9 +4,9 @@
 #include "output.h"
 #include "datatypes.h"
 
-void* initmarkers();
+void* initmarkers(void);
 int	parsemarkerfile(tMarkers* markers,char* filename);
-tInt8 gotomask(tOutput* output,tMarkers* markers,tUInt64* cursorpos,tInt64 baseaddr);
+tInt8 gotomask(tOutput* output,tMarkers* markers,tInt64* cursorpos,tInt64 baseaddr);
 
 
 #endif

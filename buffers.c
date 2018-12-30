@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <strings.h>
 #include <string.h>
+#include <stdint.h>
+#include <limits.h>
+#include <assert.h>
+
 #include "machine_type.h"
 #include "config.h"
 #include "buffers.h"
@@ -13,7 +17,7 @@
 //
 tUInt32 openbuf(tBuffer* hBuf,tUInt8 bufnum,char* filename)
 {
-	unsigned int filenamelen=0;
+	size_t filenamelen=0;
 	if (filename == NULL)
 		return	RETNOK;
 
@@ -63,7 +67,7 @@ tUInt32 readbuf(tBuffer* hBuf,tInt64 pos)
 		if (hBuf->filesize>hBuf->bufferpos)
 		{
 			setfilepos(hBuf->file,hBuf->bufferpos);
-			bytesread=fread(hBuf->data,sizeof(tUInt8),BUFFERSIZE,hBuf->file);
+			bytesread = (int)fread(hBuf->data,sizeof(tUInt8),BUFFERSIZE,hBuf->file);
 			if (bytesread!=BUFFERSIZE)
 			{
 				memset(&hBuf->data[bytesread],0,sizeof(tUInt8)*(BUFFERSIZE-bytesread));	// fill the rest with 0
@@ -85,7 +89,9 @@ tInt32	getbufferidx(tBuffer* hBuf,tInt64 pos)
 	}
 	if (retval==OK)
 	{
-		retval=pos-(hBuf->bufferpos);
+		tInt64 df = pos - hBuf->bufferpos;
+		assert(df>0 && df<INT_MAX);
+		retval = (int)df;
 	}
 	return retval;
 }

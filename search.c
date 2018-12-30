@@ -11,7 +11,7 @@ void	clearsearch(tSearch* search)
 	memset(search,0,sizeof(tSearch));
 	search->forwardnotbackward=1;
 }
-tInt8	searchfor(tSearch* search,tBuffer* buf,tUInt64* cursorpos,tBool nextnotprev)
+tInt8	searchfor(tSearch* search,tBuffer* buf,tInt64* cursorpos,tBool nextnotprev)
 {
 	tInt64	actcursorpos=*cursorpos;
 	tInt64	oldcursorpos=*cursorpos;
@@ -23,7 +23,7 @@ tInt8	searchfor(tSearch* search,tBuffer* buf,tUInt64* cursorpos,tBool nextnotpre
 	unsigned char c;
 	tInt32	idx;
 	tBool	increment;
-	tUInt64	searched=0;
+	tInt64	searched=0;
 	int i;
 
 

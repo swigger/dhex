@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <strings.h>
 #include <string.h>
-#include <ncurses.h>
+#include <ncursesw/ncurses.h>
 #include "machine_type.h"
 #include "output.h"
 #include "buffers.h"
+
 void initcolors(tOutput* output)
 {
-
 	output->colors[COLOR_BRACKETS].fg	=COLOR_BLACK;	output->colors[COLOR_BRACKETS].bg	=COLOR_BLACK;	output->colors[COLOR_BRACKETS].attrs	=A_BOLD;
 	output->colors[COLOR_HEXFIELD].fg	=COLOR_WHITE;	output->colors[COLOR_HEXFIELD].bg	=COLOR_BLACK;	output->colors[COLOR_HEXFIELD].attrs	=0;
 	output->colors[COLOR_INPUT].fg		=COLOR_BLACK;	output->colors[COLOR_INPUT].bg		=COLOR_WHITE;	output->colors[COLOR_INPUT].attrs	=0;
@@ -70,7 +70,7 @@ void drawframe(tOutput* output,tInt16 y,tInt16 x,tInt8 h,tInt8 w,char* header)
 	{
 		setcolor(output,COLOR_BRACKETS);
 		mvwprintw(output->win,y,x+1,"[");
-		mvwprintw(output->win,y,x+1+strlen(header)+1,"]");
+		mvwprintw(output->win,y,x+1+istrlen(header)+1,"]");
 		setcolor(output,COLOR_HEADER);
 		mvwprintw(output->win,y,x+2,"%s",header);
 	}
@@ -101,7 +101,7 @@ void printbuffersingle(tOutput* output,tBuffer* hBuf1,tInt64 cursorpos1,tUInt64 
 		waddch(output->win,ACS_HLINE);
 	}
 	setcolor(output,COLOR_BRACKETS);
-	mvwprintw(output->win,0,COLS-3-strlen(hBuf1->filename),"[");
+	mvwprintw(output->win,0,COLS-3-istrlen(hBuf1->filename),"[");
 	mvwprintw(output->win,0,COLS-2,"]");
 	if (addrwidth==16)
 	{
@@ -116,7 +116,7 @@ void printbuffersingle(tOutput* output,tBuffer* hBuf1,tInt64 cursorpos1,tUInt64 
 		mvwprintw(output->win,0,11,"%8X",(tUInt32)(hBuf1->bufsize+hBuf1->baseaddr));
 	}
 	setcolor(output,COLOR_HEADER);
-	mvwprintw(output->win,0,COLS-2-strlen(hBuf1->filename),"%s",hBuf1->filename);
+	mvwprintw(output->win,0,COLS-2-istrlen(hBuf1->filename),"%s",hBuf1->filename);
 	intpos1=getbufferidx(hBuf1,firstpos1);
 	if (intpos1>=0)
 	{
@@ -221,9 +221,9 @@ void printbufferdiff(tOutput* output,tBuffer* hBuf1,tBuffer* hBuf2,tInt64 cursor
 		waddch(output->win,ACS_HLINE);
 	}
 	setcolor(output,COLOR_BRACKETS);
-	mvwprintw(output->win,0,COLS-3-strlen(hBuf1->filename),"[");
+	mvwprintw(output->win,0,COLS-3-istrlen(hBuf1->filename),"[");
 	mvwprintw(output->win,0,COLS-2,"]");
-	mvwprintw(output->win,LINES/2,COLS-3-strlen(hBuf2->filename),"[");
+	mvwprintw(output->win,LINES/2,COLS-3-istrlen(hBuf2->filename),"[");
 	mvwprintw(output->win,LINES/2,COLS-2,"]");
 	if (addrwidth==16)
 	{
@@ -245,19 +245,19 @@ void printbufferdiff(tOutput* output,tBuffer* hBuf1,tBuffer* hBuf2,tInt64 cursor
 		mvwprintw(output->win,LINES/2,11,"%8X",(tUInt32)hBuf2->bufsize+hBuf2->baseaddr);
 	}
 	setcolor(output,COLOR_HEADER);
-	mvwprintw(output->win,0,COLS-2-strlen(hBuf1->filename),"%s",hBuf1->filename);
-	mvwprintw(output->win,LINES/2,COLS-2-strlen(hBuf2->filename),"%s",hBuf2->filename);
+	mvwprintw(output->win,0,COLS-2-istrlen(hBuf1->filename),"%s",hBuf1->filename);
+	mvwprintw(output->win,LINES/2,COLS-2-istrlen(hBuf2->filename),"%s",hBuf2->filename);
 	if (cursorpos1<0)
 	{
 		getbufferidx(hBuf1,0);
-		intpos1=cursorpos1;
+		intpos1=(int)cursorpos1;
 	} else {
 		intpos1=getbufferidx(hBuf1,cursorpos1);
 	}
 	if (cursorpos2<0)
 	{
 		getbufferidx(hBuf2,0);
-		intpos2=cursorpos2;
+		intpos2=(int)cursorpos2;
 	} else {
 		intpos2=getbufferidx(hBuf2,cursorpos2);
 	}
@@ -407,7 +407,7 @@ void printmainmenu(tOutput* output,tBool diffmode)
 {
 	int i;
 	int x;
-	unsigned char* menutextsnodiff[]={
+	const char* menutextsnodiff[]={
 "Goto  ",	// F1
 "Search",	// F2
 "Next  ",	// F3
@@ -419,7 +419,7 @@ void printmainmenu(tOutput* output,tBool diffmode)
 "Undo  ",	// F9
 "Quit  "};	// F10
 
-	unsigned char* menutextsdiff[]={
+	const char* menutextsdiff[]={
 "      ",	// F1
 "      ",	// F2
 "Next  ",	// F3

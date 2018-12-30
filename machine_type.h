@@ -1,7 +1,7 @@
 #ifndef MACHINE_TYPE_H
 #define MACHINE_TYPE_H
 #include <stdio.h>
-#include <ncurses.h>
+#include <ncursesw/ncurses.h>
 // number 1: datatypes
 
 typedef	unsigned char 		tBool;
@@ -27,3 +27,6 @@ void	setfilepos(tFptr f,tUInt64 pos);
 #define	RETOK	0
 #define	RETNOK	-1
 #endif
+
+//to reduce warnings.
+#define istrlen(s) ((int)strlen(s))

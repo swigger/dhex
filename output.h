@@ -2,12 +2,12 @@
 #define	OUTPUT_H
 
 #include <stdio.h>
-#include <ncurses.h>
+#include <ncursesw/ncurses.h>
 #include "buffers.h"
 #include "machine_type.h"
 #include "datatypes.h"
 
-void initcolors();
+void initcolors(tOutput* colors);
 void colorpair(tOutput* output,uicolors uicol,short fg,short bg,int attr);
 void pairsinit(tOutput* output);
 void setcolor(tOutput* output,uicolors col);

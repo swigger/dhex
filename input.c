@@ -98,10 +98,10 @@ tInt16 getkey(tKeyTab* pKeyTab,tBool inputfield)		// =1 this is an inputfield. w
 }
 
 
-tInt16 decinput(tOutput* output,tInt16 y,tInt16 x,tUInt64* val,tInt16 len)
+tInt16 decinput(tOutput* output,tInt16 y,tInt16 x,tInt64* val,tInt16 len)
 {
 	tInt16 i;
-	tInt16 ch;
+	tInt16 ch = 0;
 	tInt16 done=0;
 	tUInt64	newval;
 	char tmpbuf[21];
@@ -139,7 +139,7 @@ tInt16 hexinput(tOutput* output,tInt16 y,tInt16 x,tUInt64* val,char* relative,tI
 {
 	char e;
 	tInt16 i;
-	tInt16 ch;
+	tInt16 ch=0;
 	tInt16 done=0;
 	tUInt64	newval;
 	tUInt64	t;
@@ -199,7 +199,7 @@ tInt16 hexinput(tOutput* output,tInt16 y,tInt16 x,tUInt64* val,char* relative,tI
 tInt16 hexinput2(tOutput* output,tInt16 y,tInt16 x,char* s,tInt16* usedlen,tInt16 len)
 {
 	char* buf;
-	tInt16	ch;
+	tInt16	ch=0;
 	tBool	done=0;
 	tInt16	newusedlen;
 	tBool	nibble=0;
@@ -263,7 +263,7 @@ tInt16 stringinput(tOutput* output,tInt16 y,tInt16 x,char* s,tInt16 len)
 {
 	tInt16 i;
 	tInt16 cursorpos;
-	tInt16 ch;
+	tInt16 ch=0;
 	tInt16 done=0;
 	char* buf;
 
@@ -332,7 +332,7 @@ int	configkeytab(tKeyTab* pKeyTab,char* line)
 			retval=0;
 			x=1;
 			pKeyTab[i].seqlen=0;
-			for (j=strlen(pKeyTab[i].config);j<strlen(line);j++)
+			for (j=istrlen(pKeyTab[i].config);j<istrlen(line);j++)
 			{
 				x<<=4;
 				if (line[j]>='0' && line[j]<='9') x|=(line[j]-'0');
@@ -363,7 +363,7 @@ int writeconfigfile(tOutput* output,char* configfilename)
 
 	f=fopen(configfilename,"rb");
 	if (!f) return RETNOK;
-	size=fread(tmpbuf,sizeof(char),65536,f);
+	size=(int)fread(tmpbuf,sizeof(char),65536,f);
 	fclose(f);
 	if (size>=65536) return RETNOK;
 	tmpbuf[size++]=0;

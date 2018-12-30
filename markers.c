@@ -95,7 +95,7 @@ int	writemarkerfile(tMarkers* markers,char* filename)
 	fclose(f);
 	return	RETOK;
 }
-tInt8 gotomask(tOutput* output,tMarkers* markers,tUInt64* cursorpos,tInt64 baseaddr)
+tInt8 gotomask(tOutput* output,tMarkers* markers,tInt64* cursorpos,tInt64 baseaddr)
 {
 	tUInt64 actcursorpos=*cursorpos+baseaddr;
 	tUInt64 newcursorpos=*cursorpos+baseaddr;
@@ -167,8 +167,8 @@ tInt8 gotomask(tOutput* output,tMarkers* markers,tUInt64* cursorpos,tInt64 basea
 			mvwprintw(output->win,offsy+5+i,offsx+36,"Diff:");
 
 			snprintf(buf,17,"%c%llx",markers->relative[i],markers->cursorpos[i]);
-			mvwprintw(output->win,offsy+5+i,offsx+32-strlen(buf),"%s",buf);
-			mvwprintw(output->win,offsy+5+i,offsx+42,"%16llx",abs(markers->cursorpos[i]-actcursorpos));
+			mvwprintw(output->win,offsy+5+i,offsx+32-istrlen(buf),"%s",buf);
+			mvwprintw(output->win,offsy+5+i,offsx+42,"%16llx", markers->cursorpos[i]-actcursorpos);
 		}
 		setcolor(output,COLOR_TEXT);
 		mvwprintw(output->win,offsy+3,offsx+9,"%17llx",newcursorpos);

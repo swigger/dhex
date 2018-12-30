@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <strings.h>
 #include <string.h>
-#include <ncurses.h>
+#include <ncursesw/ncurses.h>
 #include "menu.h"
 #include "configfile.h"
 #include "machine_type.h"
@@ -173,8 +173,8 @@ int parsecommandlineoptions(int argc,char** argv,tInt64* baseaddr1,tInt64* basea
 				case 'g':
 				case 'G':
 						print_gpl();		// print the gpl and be done with it
-						exit(0);
 						lastopt[0]=0;
+						exit(0);
 						break;
 				case 'X':
 				case 'x':	printf("TODO:hexcalc\n");
