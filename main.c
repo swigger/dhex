@@ -405,6 +405,12 @@ int main(int argc,char** argv)
 	int filename2=-1;
 	char* homedir;
 	char configfile[512];
+#ifdef __linux__
+	// there(where? securecrt? linux term package?) is a bug. So term must be linux.
+	// buginfo: when connect linux ssh by securecrt, output is broken.
+	// buginfo: when connect linux ssh by mac term, only the HLINE is broken.
+	setenv("TERM", "linux", 1);
+#endif
 	setenv("LANG", "en_US.UTF-8", 1);
 	setlocale(LC_ALL, "");
 #ifdef DEBUG
@@ -754,16 +760,17 @@ int main(int argc,char** argv)
 				}
 			}
 		}
+		if (output->win) endwin();
 		if (output)
 		{
 			if (output->pKeyTab) free(output->pKeyTab);
 			free(output);
+			output = 0;
 		}
 		if (buf1) free(buf1);
 		if (buf2) free(buf2);
 		if (hHexCalc)	free(hHexCalc);
 		if (markers)	free(markers);
-		if (output->win) endwin();
 		welcomescreen(argv[0]);
 	} else {
 		if (gosearch1) fprintf(stderr,"%lli occurances found in %s\n",search1.occurancesfound,buf1->filename);
